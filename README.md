@@ -8,11 +8,11 @@ _Setup_
 
 put file logs.php in folder `www/web/` 
 
-Update  $p1, $p2 variables  if dynamic resolving fails.
+Update  $p1 (apache logs path), $p2 (Symfony  logs path) variables  if dynamic resolving fails.
 
 `$p1 = "C:/xampp/apache/logs/error.log"`
 
-`$p2 = "C:/Work/BridgeManagement/www/app/logs/prod.log"`
+`$p2 = "C:/Myproject/app/logs/prod.log"`
 
 _Usage_
 
