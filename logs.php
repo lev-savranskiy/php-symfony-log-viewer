@@ -37,7 +37,14 @@
 
     echo '<h3>'. apache_get_version(). ' LOG</h3>';
 
+    //this is apache logs path
+    //$p1 = "C:/xampp/apache/logs/error.log"
+    //or dynamic
     $p1 = str_replace( "bin/openssl.cnf", "logs/error.log", $_SERVER["OPENSSL_CONF"]);
+
+    //this is Symfony  logs path
+    //$p2 = "C:/Work/BridgeManagement/www/app/logs/prod.log"
+    //or dynamic
     $p2 = str_replace( "web", "app/logs/prod.log", $_SERVER["DOCUMENT_ROOT"]);
 
     function logLast($fname)
