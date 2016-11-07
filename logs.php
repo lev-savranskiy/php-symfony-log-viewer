@@ -24,12 +24,18 @@ $p1 = str_replace("bin/openssl.cnf", "logs/error.log", $_SERVER["OPENSSL_CONF"])
 $p2 = str_replace("web", "app/logs/prod.log", $_SERVER["DOCUMENT_ROOT"]);
 
 
-function logLast($fname)
-{
-    echo "<p>See full log " . $fname . "</a></p>";
+
+
+function logViewer($fname){
+
+
+    echo "<p>See full log <a href='logs.php?f=" . $fname . "' target='_blank'>" . $fname . "</a></p>";
     $file = file($fname);
     echo '<div class="log">';
-    for ($i = max(0, count($file) - 10); $i < count($file); $i++) {
+
+    $limit = isset($_GET['f']) ? count($file) : 10;
+
+    for ($i = max(0, count($file) - $limit); $i < count($file); $i++) {
         echo "<p>" . $file[$i] . "</p>";
     }
     echo '</div>';
@@ -68,10 +74,17 @@ function logLast($fname)
 
 <?php
 
-echo '<h3>' . apache_get_version() . ' LOG</h3>';
-logLast($p1);
-echo '<h3>SYMFONY LOG</h3>';
-logLast($p2);
+if(isset($_GET['f'])){
+    logViewer($p1);
+    logViewer($_GET['f']);
+}else{
+    echo '<h3>' . apache_get_version() . ' LOG</h3>';
+    logViewer($p1);
+    echo '<h3>SYMFONY LOG</h3>';
+    logViewer($p2);
+}
+
+
 ?>
 
 </body>
