@@ -1,18 +1,18 @@
 ## symfony / apache  Windows Local Log Viewer
 
-_put file in www/web/logs.php_
+_Setup_
+
+put file logs.php in folder `www/web/` 
 
 Update file $p1, $p2 for logLast arguments if dynamic resoliving fails.
 
-_Setup example_
+`$p1 = "C:/xampp/apache/logs/error.log"`
 
-` $p1 = "C:/xampp/apache/logs/error.log"`
+`$p2 = "C:/Work/BridgeManagement/www/app/logs/prod.log"`
 
-` $p2 = "C:/Work/BridgeManagement/www/app/logs/prod.log"`
+_Usage_
 
-_View example_
-
-Go to local **domain/logs.php**
+Go to  **localdomain/logs.php**
 
 http://localhost/logs.php
 
