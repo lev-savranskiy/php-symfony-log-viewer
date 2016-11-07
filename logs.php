@@ -19,7 +19,7 @@
 $p1 = str_replace("bin/openssl.cnf", "logs/error.log", $_SERVER["OPENSSL_CONF"]);
 
 //this is Symfony  logs path
-//$p2 = "C:/Work/BridgeManagement/www/app/logs/prod.log"
+//$p2 = "C:/Myproject/app/logs/prod.log"
 //or try dynamic
 $p2 = str_replace("web", "app/logs/prod.log", $_SERVER["DOCUMENT_ROOT"]);
 
@@ -42,7 +42,7 @@ function logLast($fname)
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge Management System - Logs</title>
+    <title>Symfony and apache log viewer</title>
 
     <style>
         .log {
