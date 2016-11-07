@@ -8,7 +8,7 @@ _Setup_
 
 put file logs.php in folder `www/web/` 
 
-Update file $p1, $p2 for logLast arguments if dynamic resoliving fails.
+Update  $p1, $p2 variables  if dynamic resolving fails.
 
 `$p1 = "C:/xampp/apache/logs/error.log"`
 
