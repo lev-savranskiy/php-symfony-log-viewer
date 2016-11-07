@@ -1,3 +1,41 @@
+<?php
+
+/*
+ * This is simple symfony and apache log viewer
+ *
+ * (c) Lev.Savranskiy@gmail com
+ *
+ * See https://github.com/lev-savranskiy
+ */
+
+
+/***
+ * SETUP
+ */
+
+//this is apache logs path
+//$p1 = "C:/xampp/apache/logs/error.log"
+//or try dynamic
+$p1 = str_replace("bin/openssl.cnf", "logs/error.log", $_SERVER["OPENSSL_CONF"]);
+
+//this is Symfony  logs path
+//$p2 = "C:/Work/BridgeManagement/www/app/logs/prod.log"
+//or try dynamic
+$p2 = str_replace("web", "app/logs/prod.log", $_SERVER["DOCUMENT_ROOT"]);
+
+
+function logLast($fname)
+{
+    echo "<p>See full log " . $fname . "</a></p>";
+    $file = file($fname);
+    echo '<div class="log">';
+    for ($i = max(0, count($file) - 10); $i < count($file); $i++) {
+        echo "<p>" . $file[$i] . "</p>";
+    }
+    echo '</div>';
+}
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
@@ -21,48 +59,20 @@
         }
 
         p {
-            margin:  5px;
+            margin: 5px;
 
         }
     </style>
 </head>
 <body>
 
+<?php
 
-
-
-    <?php
-
-
-
-    echo '<h3>'. apache_get_version(). ' LOG</h3>';
-
-    //this is apache logs path
-    //$p1 = "C:/xampp/apache/logs/error.log"
-    //or dynamic
-    $p1 = str_replace( "bin/openssl.cnf", "logs/error.log", $_SERVER["OPENSSL_CONF"]);
-
-    //this is Symfony  logs path
-    //$p2 = "C:/Work/BridgeManagement/www/app/logs/prod.log"
-    //or dynamic
-    $p2 = str_replace( "web", "app/logs/prod.log", $_SERVER["DOCUMENT_ROOT"]);
-
-    function logLast($fname)
-    {
-        echo "<p>See full log "  .  $fname . "</a></p>";
-        $file = file($fname);
-        echo '<div class="log">';
-        for ($i = max(0, count($file) - 10); $i < count($file); $i++) {
-            echo "<p>" .  $file[$i] . "</p>";
-        }
-        echo '</div>';
-    }
-
-    logLast($p1);
-
-    echo '<h3>SYMFONY LOG</h3>';
-    logLast($p2);
-    ?>
+echo '<h3>' . apache_get_version() . ' LOG</h3>';
+logLast($p1);
+echo '<h3>SYMFONY LOG</h3>';
+logLast($p2);
+?>
 
 </body>
 </html>
