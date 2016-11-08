@@ -2,13 +2,15 @@
 
 _Description_
 
-Simple php file shows last 10 lines of symfony and apache logs on a single page.
+Simple php file shows last 10 lines or Full  symfony and apache logs on a single page.
 
 _Setup_
 
-put file logs.php in folder `www/web/` 
+put file logs.php in Symfony's folder `/web/` 
 
-Update  $p1 (apache logs path), $p2 (Symfony  logs path) variables  if dynamic resolving fails.
+Update logs.php  $p1 (apache logs path), $p2 (Symfony  logs path) variables  if dynamic resolving fails.
+
+Example
 
 `$p1 = "C:/xampp/apache/logs/error.log"`
 
@@ -16,10 +18,12 @@ Update  $p1 (apache logs path), $p2 (Symfony  logs path) variables  if dynamic r
 
 _Usage_
 
-Go to  **localdomain/logs.php**
+Go to project domain in browser 
 
+Example
 http://localhost/logs.php
 
+_Result_
 
 ![ symfony / apache Local Log Viewer](https://raw.githubusercontent.com/lev-savranskiy/php-symfony-log-viewer/master/symfony-log-viewer.jpg)
 
