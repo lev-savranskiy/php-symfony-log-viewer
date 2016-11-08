@@ -28,9 +28,16 @@ $p2 = str_replace("web", "app/logs/prod.log", $_SERVER["DOCUMENT_ROOT"]);
 
 function logViewer($fname){
 
-
-    echo "<p>See full log <a href='logs.php?f=" . $fname . "' target='_blank'>" . $fname . "</a></p>";
     $file = file($fname);
+
+    if(isset($_GET['f'])){
+        echo "<p>Full log " . $fname . "</p>";
+    }else{
+        echo "<p>See full log <a href='logs.php?f=" . $fname . "' target='_blank'>" . $fname . "</a></p>";
+    }
+
+
+
     echo '<div class="log">';
 
     $limit = isset($_GET['f']) ? count($file) : 10;
@@ -75,7 +82,6 @@ function logViewer($fname){
 <?php
 
 if(isset($_GET['f'])){
-    logViewer($p1);
     logViewer($_GET['f']);
 }else{
     echo '<h3>' . apache_get_version() . ' LOG</h3>';
