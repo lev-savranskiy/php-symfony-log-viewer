@@ -9,7 +9,6 @@
  */
 
 
-
 /***
  * SETUP
  */
@@ -26,9 +25,9 @@ $p1 = str_replace("bin/openssl.cnf", "logs/error.log", $_SERVER["OPENSSL_CONF"])
 $p2 = str_replace("web", "app/logs/prod.log", $_SERVER["DOCUMENT_ROOT"]);
 $p3 = str_replace("web", "app/logs/dev.log", $_SERVER["DOCUMENT_ROOT"]);
 
+const LIM = 10;
 
-
-$object =  [
+$object = [
     'access' => $p0,
     'error' => $p1,
     'prod' => $p2,
@@ -39,48 +38,84 @@ $object =  [
 /**
  * CLEAR LOGIC
  */
-if(isset($_GET['action']) && $_GET['action'] == 'clear'){
+if (isset($_GET['action']) && $_GET['action'] == 'clear') {
     clearFile($object, $_GET['f']);
     header("Location: logs.php");
     // echo '<script>window.open("logs.php", "_self");</script>';
 }
 
 
-
-function clearFile($obj, $type){
-    $fname  = $obj[$type];
+function clearFile($obj, $type)
+{
+    $fname = $obj[$type];
     file_put_contents($fname, "");
 }
 
 
+function logViewer($obj, $type)
+{
 
-function logViewer($obj, $type){
-
-    $fname  = $obj[$type];
+    $fname = $obj[$type];
     $file = file($fname);
+    $cnt = count($file);
+    $shown = $cnt > LIM ? LIM : $cnt;
 
-    if(isset($_GET['f'])){
-        echo "<p>Full log " . $fname . "</p>";
-    }else{
-        echo "<p>" . $fname . " | ";
-        echo "<a href='logs.php?f=" . $type . "' target='_blank'>See full log </a> | <a href='logs.php?f=" . $type . "&action=clear'>Clear log </a></p>";
 
+
+    if (isset($_GET['f'])) {
+        echo "<p>Full log " . $fname . ": " . $cnt . " lines </p>";
+    } else {
+
+        if ($cnt) {
+            echo "<p>" . $fname . ": last " . $shown . " of " . $cnt . " lines ";
+            echo "|  <a href='logs.php?f=" . $type . "' target='_blank'>See full log </a> | <a href='logs.php?f=" . $type . "&action=clear'>Clear log </a></p>";
+        }else{
+            echo "<p>" . $fname . ": is empty";
+        }
+     }
+
+
+    if ($cnt) {
+        echo '<div class="log">';
     }
 
 
+    $limit = isset($_GET['f']) ? 1 : $cnt - LIM;
 
-    echo '<div class="log">';
-
-    $limit = isset($_GET['f']) ? 1 : count($file) - 10;
-
-    for ($i = count($file); $i > $limit; --$i) {
-        if(isset( $file[$i])){
+    for ($i = $cnt; $i > $limit; --$i) {
+        if (isset($file[$i])) {
             echo "<p>" . $file[$i] . "</p>";
         }
-
     }
-    echo '</div>';
+
+    if ($cnt) {
+        echo '</div>';
+    }
+
+    echo "<p style='margin: 5px 0'>&nbsp;</p>";
 }
+
+function getSymfonyVersion(){
+
+    try {
+        $str = file_get_contents('../vendor/composer/installed.json');
+        $json = json_decode($str);
+
+        foreach($json as $k=>$v)
+        {
+            if('symfony/symfony' == $v->name){
+                return ($v->version);
+            }
+        }
+    } catch (Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+
+
+};
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -115,21 +150,24 @@ function logViewer($obj, $type){
 
 <?php
 
-if(isset($_GET['f'])){
+if (isset($_GET['f'])) {
 
 
     logViewer($object, $_GET['f']);
 
-}else{
-    echo '<h3>SYMFONY LOG PROD</h3>';
+} else {
+
+
+    echo '<h2>SYMFONY ' . getSymfonyVersion() . '</h2>';
+    //echo '<h4>PROD LOG</h4>';
     logViewer($object, 'prod');
-    echo '<h3>SYMFONY LOG DEV</h3>';
+  //  echo '<h4>DEV LOG</h4>';
     logViewer($object, 'dev');
 
-    echo '<h3>' . apache_get_version() . '</h3>';
-    echo '<h3>ACCESS</h3>';
+    echo '<h2>' . apache_get_version() . '</h2>';
+    //echo '<h4>ACCESS LOG</h4>';
     logViewer($object, 'access');
-    echo '<h3>ERROR</h3>';
+   // echo '<h4>ERROR LOG</h4>';
     logViewer($object, 'error');
 
 }
